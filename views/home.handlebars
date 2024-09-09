@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <h1>Lista de Produtos</h1>
+    <ul id="product-list">
+        {{#each products}}
+            <li>{{this.name}} - {{this.price}}</li>
+        {{/each}}
+    </ul>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        socket.on('product-added', (product) => {
+            const productList = document.getElementById('product-list');
+            const newProduct = document.createElement('li');
+            newProduct.textContent = `${product.name} - ${product.price}`;
+            productList.appendChild(newProduct);
+        });
+
+      
+    </script>
+</body>
+</html>
