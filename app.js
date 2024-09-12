@@ -1,23 +1,21 @@
 const express = require('express');
-const exphbs = require('express-handlebars');
+const { engine } = require('express-handlebars'); // Corrigido para usar a forma atualizada
 const http = require('http');
 const socketIo = require('socket.io');
 const mongoose = require('mongoose');
 
-const ProductManagerFile = require('./dao/filesystem/productDao');
-const ProductManagerMongo = require('./dao/mongo/productDao');
+const ProductManagerFile = require('./ProductManager');
+const ProductManagerMongo = require('./mongo/productDao.js');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/ecommerce';
 
 mongoose.connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
 }).then(() => {
     console.log('Conectado ao MongoDB com sucesso!');
 }).catch((err) => {
@@ -26,7 +24,7 @@ mongoose.connect(mongoURI, {
 
 const productManager = process.env.USE_MONGO_DB ? new ProductManagerMongo() : new ProductManagerFile('products.json');
 
-app.engine('handlebars', exphbs());
+app.engine('handlebars', engine()); // Correção para a função engine()
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 

@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-class ProductManager {
+class ProductManagerFile {
     constructor(path) {
         this.path = path;
         this.products = [];
@@ -78,8 +78,10 @@ class ProductManager {
     }
 }
 
+module.exports = ProductManagerFile;
+
 // Exemplo de uso:
-const manager = new ProductManager('products.json');
+const manager = new ProductManagerFile('products.json');
 
 manager.addProduct({
     title: 'Produto 1',
